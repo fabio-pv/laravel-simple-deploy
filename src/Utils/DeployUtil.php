@@ -13,7 +13,7 @@ class DeployUtil
     static function getConfig()
     {
 
-        $config = config('laravel_simple_deployer');
+        $config = config('laravel_simple_deploy');
 
         return new Deploy(
             $config['secret'],
