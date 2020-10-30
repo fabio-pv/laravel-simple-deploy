@@ -1,0 +1,36 @@
+{
+    "version": "0.0.1",
+    "name": "fabio/laravel-simple-deploye",
+    "description": "...",
+    "homepage": "...",
+    "keywords": [
+        "fabio-pv",
+        "Rest",
+        "api",
+        "deploy"
+    ],
+    "authors": [
+        {
+            "name": "Fábio Pacheco",
+            "email": "fabiopv1994@gmail.com",
+            "homepage": "https://github.com/fabio-pv",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.2",
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelSimpleBases\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelSimpleDeploye\\Providers\\LaravelSimpleDeploye"
+            ]
+        }
+    }
+}
