@@ -1,10 +1,10 @@
 <?php
 
 
-namespace LaravelSimpleDeploye\Http\Controllers;
+namespace LaravelSimpleDeploy\Http\Controllers;
 
 
-use LaravelSimpleDeploye\Utils\DeployerUtil;
+use LaravelSimpleDeploy\Utils\DeployUtil;
 
 class DeployController
 {
@@ -13,7 +13,7 @@ class DeployController
 
     public function __construct()
     {
-        $this->config = DeployerUtil::getConfig();
+        $this->config = DeployUtil::getConfig();
     }
 
     public function start()

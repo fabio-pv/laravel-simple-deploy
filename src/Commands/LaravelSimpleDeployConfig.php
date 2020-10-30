@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelSimpleDeploye\Commands;
+namespace LaravelSimpleDeploy\Commands;
 
 use Illuminate\Console\Command;
 
@@ -37,8 +37,8 @@ class LaravelSimpleDeployConfig extends Command
      */
     public function handle()
     {
-        $source = getcwd() . '/vendor/fabio/laravel-simple-deploye/src/config/laravel_simple_deployer.php';
-        $dest = getcwd() . '/config/laravel_simple_deployer.php';
+        $source = getcwd() . '/vendor/fabio/laravel-simple-deploy/src/config/laravel_simple_deploy.php';
+        $dest = getcwd() . '/config/laravel_simple_deploy.php';
         $result = copy($source, $dest);
 
         if ($result === true) {

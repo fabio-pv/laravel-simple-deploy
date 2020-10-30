@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('deploy', '\LaravelSimpleDeploye\Http\Controllers\DeployController@start');
+Route::post('deploy', '\LaravelSimpleDeploy\Http\Controllers\DeployController@start');

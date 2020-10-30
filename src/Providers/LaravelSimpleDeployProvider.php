@@ -1,13 +1,13 @@
 <?php
 
 
-namespace LaravelSimpleDeploye\Providers;
+namespace LaravelSimpleDeploy\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
-use LaravelSimpleDeploye\Commands\LaravelSimpleDeployConfig;
+use LaravelSimpleDeploy\Commands\LaravelSimpleDeployConfig;
 
-class LaravelSimpleDeployeProvider extends ServiceProvider
+class LaravelSimpleDeployProvider extends ServiceProvider
 {
 
     public function boot()

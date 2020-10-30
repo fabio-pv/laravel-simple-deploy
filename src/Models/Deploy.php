@@ -1,11 +1,11 @@
 <?php
 
 
-namespace LaravelSimpleDeploye\Models;
+namespace LaravelSimpleDeploy\Models;
 
 /**
  * Class Deployer
- * @package LaravelSimpleDeploye\Models
+ * @package LaravelSimpleDeploy\Models
  *
  * @property string $secret
  * @property bool $enabled
@@ -19,7 +19,7 @@ namespace LaravelSimpleDeploye\Models;
  * @property bool $composerUpdate
  * @property bool $artisanMigrate
  */
-class Deployer
+class Deploy
 {
 
     public $secret;

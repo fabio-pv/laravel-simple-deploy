@@ -1,21 +1,21 @@
 <?php
 
 
-namespace LaravelSimpleDeploye\Utils;
+namespace LaravelSimpleDeploy\Utils;
 
 
 
 
-use LaravelSimpleDeploye\Models\Deployer;
+use LaravelSimpleDeploy\Models\Deploy;
 
-class DeployerUtil
+class DeployUtil
 {
     static function getConfig()
     {
 
         $config = config('laravel_simple_deployer');
 
-        return new Deployer(
+        return new Deploy(
             $config['secret'],
             $config['enabled'],
             $config['branch'],
