@@ -5,6 +5,7 @@ namespace LaravelSimpleDeploye\Providers;
 
 
 use Illuminate\Support\ServiceProvider;
+use LaravelSimpleDeploye\Commands\LaravelSimpleDeployConfig;
 
 class LaravelSimpleDeployeProvider extends ServiceProvider
 {
@@ -17,6 +18,7 @@ class LaravelSimpleDeployeProvider extends ServiceProvider
     public function register()
     {
         $this->commands([
+            LaravelSimpleDeployConfig::class
         ]);
     }
 
