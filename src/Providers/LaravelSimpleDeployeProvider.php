@@ -6,7 +6,7 @@ namespace LaravelSimpleDeploye\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelSimpleBaseProvider extends ServiceProvider
+class LaravelSimpleDeployeProvider extends ServiceProvider
 {
 
     public function boot()

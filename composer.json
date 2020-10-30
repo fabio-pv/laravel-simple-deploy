@@ -29,7 +29,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaravelSimpleDeploye\\Providers\\LaravelSimpleDeploye"
+                "LaravelSimpleDeploye\\Providers\\LaravelSimpleDeployeProvider"
             ]
         }
     }
