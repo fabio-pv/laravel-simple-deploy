@@ -11,7 +11,7 @@ class LaravelSimpleDeployConfig extends Command
      *
      * @var string
      */
-    protected $signature = 'fabio-pv:config';
+    protected $signature = 'fabio-pv:deploy-config';
 
     /**
      * The console command description.
