@@ -24,8 +24,6 @@ class DeployUtil
             $config['git_type_http_username'],
             $config['git_type_http_password'],
             $config['git_type_http_repo'],
-            $config['composer_install'],
-            $config['composer_update'],
             $config['artisan_migrate']
         );
     }

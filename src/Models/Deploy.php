@@ -30,8 +30,6 @@ class Deploy
     public $gitTypeHttpUserName;
     public $gitTypeHttpPassword;
     public $gitTypeHttpRepo;
-    public $composerInstall;
-    public $composerUpdate;
     public $artisanMigrate;
 
     public function __construct(
@@ -43,8 +41,6 @@ class Deploy
         string $gitTypeHttpUserName,
         string $gitTypeHttpPassword,
         string $gitTypeHttpRepo,
-        string $composerInstall,
-        string $composerUpdate,
         string $artisanMigrate
     )
     {
@@ -56,9 +52,7 @@ class Deploy
         $this->gitTypeHttpUserName = $gitTypeHttpUserName;
         $this->gitTypeHttpPassword = $gitTypeHttpPassword;
         $this->gitTypeHttpRepo = $gitTypeHttpRepo;
-        $this->composerInstall = (bool)$composerInstall;
-        $this->composerUpdate = (bool)$composerUpdate;
-        $this->artisanMigrate = $artisanMigrate;
+        $this->artisanMigrate = (bool)$artisanMigrate;
     }
 
     public function getRepoWithoutHttp()

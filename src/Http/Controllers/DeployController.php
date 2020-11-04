@@ -4,6 +4,7 @@
 namespace LaravelSimpleDeploy\Http\Controllers;
 
 
+use Illuminate\Support\Facades\Artisan;
 use LaravelSimpleDeploy\Utils\DeployUtil;
 
 class DeployController
@@ -20,7 +21,7 @@ class DeployController
     {
         try {
 
-            $this->verifySecret();
+            /*$this->verifySecret();*/
 
             if ($this->config->enabled === false) {
                 throw new \Exception('Deployer not enabled');
@@ -35,11 +36,10 @@ class DeployController
             }
 
             $this->startGitPull();
-            $this->startComposerInstall();
-            $this->startComposerUpdate();
+            $this->startMigrate();
 
             return response()->json(
-                'start',
+                'Finalizado',
                 200
             );
 
@@ -102,43 +102,39 @@ class DeployController
                 . '@'
                 . $this->config->getRepoWithoutHttp()
                 . ' '
-                . $this->config->branch;
+                . $this->config->branch
+                . ' > /dev/null 2>&1 &';
 
             exec($command, $result);
+            $this->startMessageProcess('GIT', $result);
 
         } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    private function startComposerInstall()
+    private function startMessageProcess($process, $output = [])
     {
-        try {
+        echo '*** ' . $process . ' ***' . PHP_EOL;
+        echo PHP_EOL;
 
-            if ($this->config->composerInstall !== true) {
-                return;
-            }
-
-            putenv("HOME=" . getcwd());
-            exec('cd .. && /usr/local/bin/composer install > /dev/null 2>&1 &');
-
-        } catch (\Exception $e) {
-            throw $e;
+        foreach ($output as $item) {
+            echo $item . PHP_EOL;
         }
+
+        echo PHP_EOL;
     }
 
-    private function startComposerUpdate()
+    private function startMigrate()
     {
-        try {
-            if ($this->config->composerUpdate !== true) {
-                return;
-            }
 
-            putenv("HOME=" . getcwd());
-            exec('cd .. && /usr/local/bin/composer update > /dev/null 2>&1 &');
-
-        } catch (\Exception $e) {
-            throw $e;
+        if ($this->config->artisanMigrate !== true) {
+            return;
         }
+
+        $exitCode = Artisan::call('migrate', [
+            '--force' => true,
+        ]);
+        $this->startMessageProcess('Migrate');
     }
 }
