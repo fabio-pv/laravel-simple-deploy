@@ -21,7 +21,7 @@ class DeployController
     {
         try {
 
-            /*$this->verifySecret();*/
+            $this->verifySecret();
 
             if ($this->config->enabled === false) {
                 throw new \Exception('Deployer not enabled');
@@ -132,7 +132,9 @@ class DeployController
             return;
         }
 
-        $exitCode = Artisan::call('migrate', [
+        sleep(30);
+
+        Artisan::call('migrate', [
             '--force' => true,
         ]);
         $this->startMessageProcess('Migrate');
