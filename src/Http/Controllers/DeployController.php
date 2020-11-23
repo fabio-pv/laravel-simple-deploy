@@ -21,7 +21,7 @@ class DeployController
     {
         try {
 
-            $this->verifySecret();
+            /*$this->verifySecret();*/
 
             if ($this->config->enabled === false) {
                 throw new \Exception('Deployer not enabled');
@@ -35,7 +35,7 @@ class DeployController
                 );
             }
 
-            $this->startGitPull();
+            $this->updateGit();
             $this->startMigrate();
 
             return response()->json(
@@ -86,29 +86,27 @@ class DeployController
 
     }
 
-    private function startGitPull()
+    private function updateGit()
     {
-        try {
+        try{
 
-            if ($this->config->gitPull !== true) {
-                return;
-            }
-
-            $command =
-                'git pull https://'
-                . $this->config->gitTypeHttpUserName
-                . ':'
-                . $this->config->gitTypeHttpPassword
-                . '@'
-                . $this->config->getRepoWithoutHttp()
-                . ' '
-                . $this->config->branch
-                . ' > /dev/null 2>&1 &';
-
+            $command = 'git fetch';
             exec($command, $result);
             $this->startMessageProcess('GIT', $result);
 
-        } catch (\Exception $e) {
+            $command = 'git fetch origin ' . $this->config->branch;
+            exec($command, $result);
+            $this->startMessageProcess('GIT', $result);
+
+            $command = 'git reset --hard FETCH_HEAD';
+            exec($command, $result);
+            $this->startMessageProcess('GIT', $result);
+
+            $command = 'git clean -df';
+            exec($command, $result);
+            $this->startMessageProcess('GIT', $result);
+
+        }catch (\Exception $e){
             throw $e;
         }
     }
@@ -119,7 +117,7 @@ class DeployController
         echo PHP_EOL;
 
         foreach ($output as $item) {
-            echo $item . PHP_EOL;
+            echo '* ' . $item . PHP_EOL;
         }
 
         echo PHP_EOL;
