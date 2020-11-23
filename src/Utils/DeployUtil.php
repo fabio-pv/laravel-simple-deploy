@@ -19,12 +19,9 @@ class DeployUtil
             $config['secret'],
             $config['enabled'],
             $config['branch'],
-            $config['git_pull'],
-            $config['git_type_auth'],
-            $config['git_type_http_username'],
-            $config['git_type_http_password'],
-            $config['git_type_http_repo'],
-            $config['artisan_migrate']
+            $config['git_update'],
+            $config['artisan_migrate'],
+            $config['artisan_config_cache']
         );
     }
 }

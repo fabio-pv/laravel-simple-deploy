@@ -21,7 +21,7 @@ class DeployController
     {
         try {
 
-            /*$this->verifySecret();*/
+            $this->verifySecret();
 
             if ($this->config->enabled === false) {
                 throw new \Exception('Deployer not enabled');
@@ -37,6 +37,7 @@ class DeployController
 
             $this->updateGit();
             $this->startMigrate();
+            $this->startConfigCache();
 
             return response()->json(
                 'Finalizado',
@@ -90,6 +91,10 @@ class DeployController
     {
         try{
 
+            if($this->config->gitUpdate !== true){
+                return;
+            }
+
             $command = 'git fetch';
             exec($command, $result);
             $this->startMessageProcess('GIT', $result);
@@ -125,16 +130,22 @@ class DeployController
 
     private function startMigrate()
     {
-
         if ($this->config->artisanMigrate !== true) {
             return;
         }
-
-        sleep(30);
 
         Artisan::call('migrate', [
             '--force' => true,
         ]);
         $this->startMessageProcess('Migrate');
+    }
+
+    private function startConfigCache()
+    {
+        if($this->config->artisanConfigCache !== true){
+            return;
+        }
+
+        Artisan::call('config:cache');
     }
 }
