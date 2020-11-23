@@ -10,14 +10,9 @@ namespace LaravelSimpleDeploy\Models;
  * @property string $secret
  * @property bool $enabled
  * @property string $branch
- * @property bool $gitPull
- * @property string $gitTypeAuth
- * @property string $gitTypeHttpUserName
- * @property string $gitTypeHttpPassword
- * @property string $gitTypeHttpRepo
- * @property bool $composerInstall
- * @property bool $composerUpdate
+ * @property bool $gitUpdate
  * @property bool $artisanMigrate
+ * @property bool $artisanConfigCache
  */
 class Deploy
 {
@@ -25,34 +20,25 @@ class Deploy
     public $secret;
     public $enabled;
     public $branch;
-    public $gitPull;
-    public $gitTypeAuth;
-    public $gitTypeHttpUserName;
-    public $gitTypeHttpPassword;
-    public $gitTypeHttpRepo;
+    public $gitUpdate;
     public $artisanMigrate;
+    public $artisanConfigCache;
 
     public function __construct(
         string $secret,
         string $enabled,
         string $branch,
-        string $gitPull,
-        string $gitTypeAuth,
-        string $gitTypeHttpUserName,
-        string $gitTypeHttpPassword,
-        string $gitTypeHttpRepo,
-        string $artisanMigrate
+        string $gitUpdate,
+        string $artisanMigrate,
+        string $artisanConfigCache
     )
     {
         $this->secret = $secret;
         $this->enabled = $enabled;
         $this->branch = $branch;
-        $this->gitPull = (bool)$gitPull;
-        $this->gitTypeAuth = $gitTypeAuth;
-        $this->gitTypeHttpUserName = $gitTypeHttpUserName;
-        $this->gitTypeHttpPassword = $gitTypeHttpPassword;
-        $this->gitTypeHttpRepo = $gitTypeHttpRepo;
+        $this->gitUpdate = (bool)$gitUpdate;
         $this->artisanMigrate = (bool)$artisanMigrate;
+        $this->artisanConfigCache = (bool)$artisanConfigCache;
     }
 
     public function getRepoWithoutHttp()

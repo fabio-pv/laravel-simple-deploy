@@ -35,11 +35,12 @@ class DeployController
                 );
             }
 
-            $this->startGitPull();
+            $this->updateGit();
             $this->startMigrate();
+            $this->startConfigCache();
 
             return response()->json(
-                'Finalizado',
+                'End',
                 200
             );
 
@@ -86,57 +87,70 @@ class DeployController
 
     }
 
-    private function startGitPull()
+    private function updateGit()
     {
         try {
 
-            if ($this->config->gitPull !== true) {
+            if ($this->config->gitUpdate !== true) {
                 return;
             }
 
-            $command =
-                'git pull https://'
-                . $this->config->gitTypeHttpUserName
-                . ':'
-                . $this->config->gitTypeHttpPassword
-                . '@'
-                . $this->config->getRepoWithoutHttp()
-                . ' '
-                . $this->config->branch
-                . ' > /dev/null 2>&1 &';
+            $this->startMessageProcess('GIT');
 
+            $command = 'git fetch';
             exec($command, $result);
-            $this->startMessageProcess('GIT', $result);
+            $this->startMessageProcess(null, $result);
+
+            $command = 'git fetch origin ' . $this->config->branch;
+            exec($command, $result);
+            $this->startMessageProcess(null, $result);
+
+            $command = 'git reset --hard FETCH_HEAD';
+            exec($command, $result);
+            $this->startMessageProcess(null, $result);
+
+            $command = 'git clean -df';
+            exec($command, $result);
+            $this->startMessageProcess(null, $result);
 
         } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    private function startMessageProcess($process, $output = [])
+    private function startMessageProcess($process = null, $output = [])
     {
-        echo '*** ' . $process . ' ***' . PHP_EOL;
-        echo PHP_EOL;
 
-        foreach ($output as $item) {
-            echo $item . PHP_EOL;
+        if(!empty($process)){
+            echo '*** ' . $process . ' ***' . PHP_EOL;
         }
 
-        echo PHP_EOL;
+        foreach ($output as $item) {
+            echo '* ' . $item . PHP_EOL;
+        }
     }
 
     private function startMigrate()
     {
-
         if ($this->config->artisanMigrate !== true) {
             return;
         }
 
-        sleep(30);
-
         Artisan::call('migrate', [
             '--force' => true,
         ]);
-        $this->startMessageProcess('Migrate');
+
+        $this->startMessageProcess('Migrate', ['ok']);
+    }
+
+    private function startConfigCache()
+    {
+        if ($this->config->artisanConfigCache !== true) {
+            return;
+        }
+
+        Artisan::call('config:cache');
+
+        $this->startMessageProcess('Cache', ['ok']);
     }
 }
