@@ -40,7 +40,7 @@ class DeployController
             $this->startConfigCache();
 
             return response()->json(
-                'Finalizado',
+                'End',
                 200
             );
 
@@ -89,43 +89,45 @@ class DeployController
 
     private function updateGit()
     {
-        try{
+        try {
 
-            if($this->config->gitUpdate !== true){
+            if ($this->config->gitUpdate !== true) {
                 return;
             }
 
+            $this->startMessageProcess('GIT');
+
             $command = 'git fetch';
             exec($command, $result);
-            $this->startMessageProcess('GIT', $result);
+            $this->startMessageProcess(null, $result);
 
             $command = 'git fetch origin ' . $this->config->branch;
             exec($command, $result);
-            $this->startMessageProcess('GIT', $result);
+            $this->startMessageProcess(null, $result);
 
             $command = 'git reset --hard FETCH_HEAD';
             exec($command, $result);
-            $this->startMessageProcess('GIT', $result);
+            $this->startMessageProcess(null, $result);
 
             $command = 'git clean -df';
             exec($command, $result);
-            $this->startMessageProcess('GIT', $result);
+            $this->startMessageProcess(null, $result);
 
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    private function startMessageProcess($process, $output = [])
+    private function startMessageProcess($process = null, $output = [])
     {
-        echo '*** ' . $process . ' ***' . PHP_EOL;
-        echo PHP_EOL;
+
+        if(!empty($process)){
+            echo '*** ' . $process . ' ***' . PHP_EOL;
+        }
 
         foreach ($output as $item) {
             echo '* ' . $item . PHP_EOL;
         }
-
-        echo PHP_EOL;
     }
 
     private function startMigrate()
@@ -137,15 +139,18 @@ class DeployController
         Artisan::call('migrate', [
             '--force' => true,
         ]);
-        $this->startMessageProcess('Migrate');
+
+        $this->startMessageProcess('Migrate', ['ok']);
     }
 
     private function startConfigCache()
     {
-        if($this->config->artisanConfigCache !== true){
+        if ($this->config->artisanConfigCache !== true) {
             return;
         }
 
         Artisan::call('config:cache');
+
+        $this->startMessageProcess('Cache', ['ok']);
     }
 }
