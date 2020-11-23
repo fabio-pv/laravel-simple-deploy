@@ -140,7 +140,9 @@ class DeployController
             '--force' => true,
         ]);
 
+
         $this->startMessageProcess('Migrate', [Artisan::output()]);
+
     }
 
     private function startConfigCache()
@@ -149,7 +151,7 @@ class DeployController
             return;
         }
 
-        Artisan::call('config:cache');
+        Artisan::call('config:cache');     
         $this->startMessageProcess('Cache', [Artisan::output()]);
     }
 }
