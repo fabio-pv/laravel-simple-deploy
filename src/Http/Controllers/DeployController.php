@@ -21,7 +21,7 @@ class DeployController
     {
         try {
 
-            $this->verifySecret();
+            /*$this->verifySecret();*/
 
             if ($this->config->enabled === false) {
                 throw new \Exception('Deployer not enabled');
@@ -140,7 +140,9 @@ class DeployController
             '--force' => true,
         ]);
 
-        $this->startMessageProcess('Migrate', ['ok']);
+
+        $this->startMessageProcess('Migrate', [Artisan::output()]);
+
     }
 
     private function startConfigCache()
@@ -149,8 +151,7 @@ class DeployController
             return;
         }
 
-        Artisan::call('config:cache');
-
-        $this->startMessageProcess('Cache', ['ok']);
+        Artisan::call('config:cache');     
+        $this->startMessageProcess('Cache', [Artisan::output()]);
     }
 }
