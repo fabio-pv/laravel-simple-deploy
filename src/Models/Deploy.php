@@ -11,8 +11,7 @@ namespace LaravelSimpleDeploy\Models;
  * @property bool $enabled
  * @property string $branch
  * @property bool $gitUpdate
- * @property bool $artisanMigrate
- * @property bool $artisanConfigCache
+ * @property array $customCommandArtisan
  */
 class Deploy
 {
@@ -21,29 +20,20 @@ class Deploy
     public $enabled;
     public $branch;
     public $gitUpdate;
-    public $artisanMigrate;
-    public $artisanConfigCache;
+    public $customCommandArtisan;
 
     public function __construct(
         string $secret,
         string $enabled,
         string $branch,
         string $gitUpdate,
-        string $artisanMigrate,
-        string $artisanConfigCache
+        array $customCommandArtisan
     )
     {
         $this->secret = $secret;
         $this->enabled = $enabled;
         $this->branch = $branch;
         $this->gitUpdate = (bool)$gitUpdate;
-        $this->artisanMigrate = (bool)$artisanMigrate;
-        $this->artisanConfigCache = (bool)$artisanConfigCache;
+        $this->customCommandArtisan = $customCommandArtisan;
     }
-
-    public function getRepoWithoutHttp()
-    {
-        return str_replace('https://', '', $this->gitTypeHttpRepo);
-    }
-
 }

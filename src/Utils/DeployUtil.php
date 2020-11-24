@@ -20,8 +20,7 @@ class DeployUtil
             $config['enabled'],
             $config['branch'],
             $config['git_update'],
-            $config['artisan_migrate'],
-            $config['artisan_config_cache']
+            $config['custom_artisan_command']
         );
     }
 }

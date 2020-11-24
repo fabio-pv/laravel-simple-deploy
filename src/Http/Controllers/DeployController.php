@@ -21,7 +21,7 @@ class DeployController
     {
         try {
 
-            /*$this->verifySecret();*/
+            $this->verifySecret();
 
             if ($this->config->enabled === false) {
                 throw new \Exception('Deployer not enabled');
@@ -36,8 +36,7 @@ class DeployController
             }
 
             $this->updateGit();
-            $this->startMigrate();
-            $this->startConfigCache();
+            $this->customArtisanCommand();
 
             return response()->json(
                 'End',
@@ -118,38 +117,38 @@ class DeployController
         }
     }
 
+    private function customArtisanCommand()
+    {
+        foreach ($this->config->customCommandArtisan as $index => $command) {
+            $this->runCustomArtisanCommand(
+                $index,
+                array_keys($command)[0],
+                array_values($command)[0]
+            );
+        }
+    }
+
+    private function runCustomArtisanCommand($name, $command, $options = [])
+    {
+        try {
+
+            Artisan::call($command, $options);
+            $this->startMessageProcess($name, [Artisan::output()]);
+
+        } catch (\Exception $e) {
+            $this->startMessageProcess($name, [$e->getMessage()]);
+        }
+    }
+
     private function startMessageProcess($process = null, $output = [])
     {
 
-        if(!empty($process)){
+        if (!empty($process)) {
             echo '*** ' . $process . ' ***' . PHP_EOL;
         }
 
         foreach ($output as $item) {
-            echo '* ' . $item . PHP_EOL;
+            echo $item . PHP_EOL;
         }
-    }
-
-    private function startMigrate()
-    {
-        if ($this->config->artisanMigrate !== true) {
-            return;
-        }
-
-        Artisan::call('migrate', [
-            '--force' => true,
-        ]);
-
-        $this->startMessageProcess('Migrate', [Artisan::output()]);
-    }
-
-    private function startConfigCache()
-    {
-        if ($this->config->artisanConfigCache !== true) {
-            return;
-        }
-
-        Artisan::call('config:cache');
-        $this->startMessageProcess('Cache', [Artisan::output()]);
     }
 }
