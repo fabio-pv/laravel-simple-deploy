@@ -20,6 +20,7 @@ class DeployController
     public function start()
     {
         try {
+            $this->startComposer();
 
             $this->verifySecret();
 
@@ -150,5 +151,17 @@ class DeployController
         foreach ($output as $item) {
             echo $item . PHP_EOL;
         }
+    }
+
+    private function startComposer()
+    {
+
+        exec('
+    export COMPOSER_HOME=$HOME/.composer;
+    cd .. && composer update 2>&1',
+        $result
+        );
+
+        dd($result);
     }
 }
