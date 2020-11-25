@@ -155,11 +155,8 @@ class DeployController
 
     private function startComposer()
     {
-
-        exec('
-    export COMPOSER_HOME=$HOME/.composer;
-    cd .. && composer update 2>&1',
-        $result
+        exec("cd .. && php /opt/cpanel/composer/bin/composer update 2>&1",
+            $result
         );
 
         dd($result);
