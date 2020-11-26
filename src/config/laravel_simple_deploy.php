@@ -32,6 +32,11 @@ return [
 
     ],
 
+    'custom_command_shell' => [
+
+        /*'Composer' => 'export COMPOSER_HOME=$HOME/.composer; cd .. && composer update 2>&1'*/
+
+    ],
 
 ];
 
