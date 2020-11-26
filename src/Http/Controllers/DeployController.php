@@ -20,7 +20,6 @@ class DeployController
     public function start()
     {
         try {
-
             $this->verifySecret();
 
             if ($this->config->enabled === false) {
@@ -36,6 +35,7 @@ class DeployController
             }
 
             $this->updateGit();
+            $this->customShellCommand();
             $this->customArtisanCommand();
 
             return response()->json(
@@ -140,9 +140,21 @@ class DeployController
         }
     }
 
+    private function customShellCommand()
+    {
+        foreach ($this->config->customCommandShell as $index => $command) {
+            $this->runCustomShellCommand($index, $command);;
+        }
+    }
+
+    private function runCustomShellCommand($title, $command)
+    {
+        exec($command, $result);
+        $this->startMessageProcess($title, $result);
+    }
+
     private function startMessageProcess($process = null, $output = [])
     {
-
         if (!empty($process)) {
             echo '*** ' . $process . ' ***' . PHP_EOL;
         }

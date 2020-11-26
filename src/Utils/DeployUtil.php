@@ -20,7 +20,8 @@ class DeployUtil
             $config['enabled'],
             $config['branch'],
             $config['git_update'],
-            $config['custom_artisan_command']
+            $config['custom_artisan_command'],
+            $config['custom_command_shell']
         );
     }
 }
