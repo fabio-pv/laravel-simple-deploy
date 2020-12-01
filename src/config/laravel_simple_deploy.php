@@ -38,5 +38,18 @@ return [
 
     ],
 
+    'mail' => [
+
+        'deployMailEnabled' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_ENABLED'),
+        'deployMailMailer' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_MAILER'),
+        'deployMailHost' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_HOST'),
+        'deployMailPort' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_PORT'),
+        'deployMailUsername' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_USERNAME'),
+        'deployMailPassword' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_PASSWORD'),
+        'deployMailFrom' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_FROM'),
+        'deployMailTo' => env('LARAVEL_SIMPLE_DEPLOYER__MAIL_TO'),
+
+    ],
+
 ];
 

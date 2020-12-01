@@ -11,6 +11,7 @@ class DeployController
 {
 
     private $config;
+    private $posts = [];
 
     public function __construct()
     {
@@ -37,6 +38,7 @@ class DeployController
             $this->updateGit();
             $this->customShellCommand();
             $this->customArtisanCommand();
+            $this->sendMail();
 
             return response()->json(
                 'End',
@@ -156,11 +158,45 @@ class DeployController
     private function startMessageProcess($process = null, $output = [])
     {
         if (!empty($process)) {
-            echo '*** ' . $process . ' ***' . PHP_EOL;
+            $title = '*** ' . $process . ' ***' . PHP_EOL;
+            echo $title;
+            $this->posts[] = $title;
+
         }
 
         foreach ($output as $item) {
-            echo $item . PHP_EOL;
+            $post = $item . PHP_EOL;
+            echo $post;
+            $this->posts[] = $post;
         }
+    }
+
+    private function sendMail()
+    {
+        if ($this->config->mail->mailEnabled !== true) {
+            return;
+        }
+
+        $body = implode(PHP_EOL, $this->posts);
+
+        $transport = (new \Swift_SmtpTransport(
+            $this->config->mail->mailHost,
+            $this->config->mail->mailPort
+        ))
+            ->setUsername($this->config->mail->mailUsername)
+            ->setPassword($this->config->mail->mailPassword);
+
+        $mailer = new \Swift_Mailer($transport);
+
+        $message = (new \Swift_Message('Deploy'))
+            ->setFrom([
+                $this->config->mail->mailFrom => 'Deploy'
+            ])
+            ->setTo(
+                $this->config->mail->mailTo
+            )
+            ->setBody($body);
+
+        $result = $mailer->send($message);
     }
 }
