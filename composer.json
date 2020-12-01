@@ -1,36 +1,37 @@
 {
-    "version": "0.0.8",
-    "name": "fabio/laravel-simple-deploy",
-    "description": "...",
-    "homepage": "https://github.com/fabio-pv/laravel-simple-deploy",
-    "keywords": [
-        "fabio-pv",
-        "Rest",
-        "api",
-        "deploy"
-    ],
-    "authors": [
-        {
-            "name": "Fábio Pacheco",
-            "email": "fabiopv1994@gmail.com",
-            "homepage": "https://github.com/fabio-pv",
-            "role": "Developer"
-        }
-    ],
-    "license": "MIT",
-    "require": {
-        "php": "^7.2.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "LaravelSimpleDeploy\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "LaravelSimpleDeploy\\Providers\\LaravelSimpleDeployProvider"
-            ]
-        }
+  "version": "0.0.8",
+  "name": "fabio/laravel-simple-deploy",
+  "description": "...",
+  "homepage": "https://github.com/fabio-pv/laravel-simple-deploy",
+  "keywords": [
+    "fabio-pv",
+    "Rest",
+    "api",
+    "deploy"
+  ],
+  "authors": [
+    {
+      "name": "Fábio Pacheco",
+      "email": "fabiopv1994@gmail.com",
+      "homepage": "https://github.com/fabio-pv",
+      "role": "Developer"
     }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.2.0",
+    "swiftmailer/swiftmailer": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "LaravelSimpleDeploy\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "LaravelSimpleDeploy\\Providers\\LaravelSimpleDeployProvider"
+      ]
+    }
+  }
 }
