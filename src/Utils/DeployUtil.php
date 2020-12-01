@@ -7,6 +7,7 @@ namespace LaravelSimpleDeploy\Utils;
 
 
 use LaravelSimpleDeploy\Models\Deploy;
+use LaravelSimpleDeploy\Models\Mail;
 
 class DeployUtil
 {
@@ -14,6 +15,17 @@ class DeployUtil
     {
 
         $config = config('laravel_simple_deploy');
+        
+        $mail = new Mail(
+            $config['mail']['deployMailEnabled'],
+            $config['mail']['deployMailMailer'],
+            $config['mail']['deployMailHost'],
+            $config['mail']['deployMailPort'],
+            $config['mail']['deployMailUsername'],
+            $config['mail']['deployMailPassword'],
+            $config['mail']['deployMailFrom'],
+            $config['mail']['deployMailTo']
+        );
 
         return new Deploy(
             $config['secret'],
@@ -21,7 +33,8 @@ class DeployUtil
             $config['branch'],
             $config['git_update'],
             $config['custom_artisan_command'],
-            $config['custom_command_shell']
+            $config['custom_command_shell'],
+            $mail
         );
     }
 }

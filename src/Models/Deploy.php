@@ -13,6 +13,7 @@ namespace LaravelSimpleDeploy\Models;
  * @property bool $gitUpdate
  * @property array $customCommandArtisan
  * @property array $customCommandShell
+ * @property Mail $mail
  */
 class Deploy
 {
@@ -23,6 +24,7 @@ class Deploy
     public $gitUpdate;
     public $customCommandArtisan;
     public $customCommandShell;
+    public $mail;
 
     public function __construct(
         string $secret,
@@ -30,7 +32,8 @@ class Deploy
         string $branch,
         string $gitUpdate,
         array $customCommandArtisan,
-        array $customCommandShell
+        array $customCommandShell,
+        Mail $mail
     )
     {
         $this->secret = $secret;
@@ -39,5 +42,6 @@ class Deploy
         $this->gitUpdate = (bool)$gitUpdate;
         $this->customCommandArtisan = $customCommandArtisan;
         $this->customCommandShell = $customCommandShell;
+        $this->mail = $mail;
     }
 }
