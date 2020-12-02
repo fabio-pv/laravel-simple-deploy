@@ -4,6 +4,7 @@
 namespace LaravelSimpleDeploy\Http\Controllers;
 
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use LaravelSimpleDeploy\Utils\DeployUtil;
 
@@ -12,9 +13,13 @@ class DeployController
 
     private $config;
     private $posts = [];
+    private $duration;
+    private $request;
 
     public function __construct()
     {
+        $this->request = request()->all();
+        $this->duration = Carbon::now();
         $this->config = DeployUtil::getConfig();
     }
 
@@ -96,23 +101,18 @@ class DeployController
                 return;
             }
 
-            $this->startMessageProcess('GIT');
-
             $command = 'git fetch';
             exec($command, $result);
-            $this->startMessageProcess(null, $result);
 
             $command = 'git fetch origin ' . $this->config->branch;
             exec($command, $result);
-            $this->startMessageProcess(null, $result);
+            $this->startMessageProcess('Git', $result);
 
             $command = 'git reset --hard FETCH_HEAD';
             exec($command, $result);
-            $this->startMessageProcess(null, $result);
 
             $command = 'git clean -df';
             exec($command, $result);
-            $this->startMessageProcess(null, $result);
 
         } catch (\Exception $e) {
             throw $e;
@@ -157,18 +157,7 @@ class DeployController
 
     private function startMessageProcess($process = null, $output = [])
     {
-        if (!empty($process)) {
-            $title = '*** ' . $process . ' ***' . PHP_EOL;
-            echo $title;
-            $this->posts[] = $title;
-
-        }
-
-        foreach ($output as $item) {
-            $post = $item . PHP_EOL;
-            echo $post;
-            $this->posts[] = $post;
-        }
+        $this->posts[$process] = $output;
     }
 
     private function sendMail()
@@ -176,8 +165,6 @@ class DeployController
         if ($this->config->mail->mailEnabled !== true) {
             return;
         }
-
-        $body = implode(PHP_EOL, $this->posts);
 
         $transport = (new \Swift_SmtpTransport(
             $this->config->mail->mailHost,
@@ -195,8 +182,43 @@ class DeployController
             ->setTo(
                 $this->config->mail->mailTo
             )
-            ->setBody($body);
+            ->setBody(
+                view('laravel-simple-deploy::deploy', [
+                    'data' => $this->makeDataView()
+                ])->render(),
+                'text/html'
+            );
 
         $result = $mailer->send($message);
+    }
+
+    private function makeDataView()
+    {
+        $data = $this->request;
+
+        $branch = str_replace('refs/heads/', '', $data['ref']);
+
+        $repositoryName = $data['repository']['full_name'];
+        $htmlUrl = $data['repository']['html_url'];
+        $pusherName = $data['pusher']['name'];
+        $timeTotal = $this->getDiffDurationSeconds();
+
+        return [
+
+            'branch' => $branch,
+            'repository_name' => $repositoryName,
+            'html_url' => $htmlUrl,
+            'pusher_name' => $pusherName,
+            'time_total' => $timeTotal,
+            'posts' => $this->posts,
+
+        ];
+
+    }
+
+    private function getDiffDurationSeconds()
+    {
+        $now = Carbon::now();
+        return $now->diffInSeconds($this->duration);
     }
 }
