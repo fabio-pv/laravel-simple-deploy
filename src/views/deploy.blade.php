@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -10,7 +10,6 @@
 
         body {
             margin: 0;
-            background: #00BCD4;
             font-family: Roboto, Arial, sans-serif;
         }
 
@@ -22,14 +21,29 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
         }
 
+        @media only screen and (max-width: 600px) {
+            .super-content-main {
+                padding: 0;
+            }
+        }
+
+        @media only screen and (min-width: 600px) {
+            .super-content-main {
+                padding: 15%;
+            }
+        }
+
         .content-main {
             position: relative;
             width: 100%;
+            background: #00BCD4;
+            padding-bottom: 100px;
+            border-radius: 20px;
+            overflow: hidden;
         }
 
         .content-header {
             width: 100%;
-            height: 250px;
             background: #673AB7;
             padding-top: 50px;
             text-align: center;
@@ -49,6 +63,7 @@
             background: white;
             border-radius: 10px;
             padding: 15px;
+            margin: auto;
         }
 
         .content-information h6 {
@@ -59,7 +74,7 @@
 
         .content-information p {
             color: #312727;
-            font-size: 12px;
+            font-size: 10px;
             text-align: left;
         }
 
@@ -113,64 +128,71 @@
     </style>
 </head>
 <body>
-<div class="content-main">
-    <div class="content-header">
-        <h5 class="title">{{ $data['repository_name'] }}</h5>
-        <a class="link" href="{{ $data['html_url'] }}">{{ $data['html_url'] }}</a>
-        <br/><br/><br/>
-        <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
-            <tr>
-                <td align="center">
-                    <div class="circle-dashboard-content">
-                        <h5>{{ $data['branch'] }}</h5>
-                        <hr/>
-                        <h6>Branch</h6>
-                    </div>
-                </td>
-                <td align="center">
-                    <div class="circle-dashboard-content">
-                        <h5>{{ $data['pusher_name'] }}</h5>
-                        <hr/>
-                        <h6>By</h6>
-                    </div>
-                </td>
-                <td align="center">
-                    <div class="circle-dashboard-content">
-                        <h5>{{ $data['time_total'] }}<span class="second-time">s</span></h5>
-                        <hr/>
-                        <h6>Duração</h6>
-                    </div>
-                </td>
-                <td align="center">
-                    <div class="circle-dashboard-content">
-                        <h5>dev</h5>
-                        <hr/>
-                        <h6>Branch</h6>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <br/>
-    </div>
-
-    @foreach($data['posts'] as $index => $post)
-        <div class="content-information-main">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+<div class="super-content-main">
+    <div class="content-main">
+        <div class="content-header">
+            <h5 class="title">{{ $data['repository_name'] }}</h5>
+            <a class="link" href="{{ $data['html_url'] }}">{{ $data['html_url'] }}</a>
+            <br/><br/><br/>
+            <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td align="center">
-                        <div class="content-information shadow-default">
-                            <h6>{{ $index }}</h6>
-                            @foreach($post as $output)
-                                <p>{{ $output }}</p>
-                            @endforeach
+                        <div class="circle-dashboard-content">
+                            <h5>{{ $data['branch'] }}</h5>
+                            <hr/>
+                            <h6>Branch</h6>
+                        </div>
+                    </td>
+                    <td align="center">
+                        <div class="circle-dashboard-content">
+                            <h5>{{ $data['pusher_name'] }}</h5>
+                            <hr/>
+                            <h6>By</h6>
                         </div>
                     </td>
                 </tr>
             </table>
+            <br/>
+            <table width="100%" align="center" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="center">
+                        <div class="circle-dashboard-content">
+                            <h5>{{ $data['time_total'] }}<span class="second-time">s</span></h5>
+                            <hr/>
+                            <h6>Duração</h6>
+                        </div>
+                    </td>
+                    <td align="center">
+                        <div class="circle-dashboard-content">
+                            <h5>...</h5>
+                            <hr/>
+                            <h6>...</h6>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <br/>
         </div>
-
-    @endforeach
-
+        <br/>
+        <br/>
+        @foreach($data['posts'] as $index => $post)
+            <div class="content-information-main">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center">
+                            <div class="content-information shadow-default">
+                                <h6>{{ $index }}</h6>
+                                @foreach($post as $output)
+                                    <p>{{ $output }}</p>
+                                @endforeach
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        @endforeach
+    </div>
 </div>
 <br/><br/>
 </body>
