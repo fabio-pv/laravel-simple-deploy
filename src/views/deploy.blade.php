@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -57,7 +57,7 @@
 
         .content-information {
             position: relative;
-            width: 60%;
+            width: 80%;
             margin-left: 100px;
             margin-right: 100px;
             background: white;
@@ -76,6 +76,15 @@
             color: #312727;
             font-size: 10px;
             text-align: left;
+            margin: 0;
+        }
+
+        .content-information .date-commit {
+            color: #473b3b;
+            font-size: 9px;
+            text-align: left;
+            margin-top: 5px;
+            margin-bottom: 10px;
         }
 
         .title {
@@ -164,9 +173,9 @@
                     </td>
                     <td align="center">
                         <div class="circle-dashboard-content">
-                            <h5>...</h5>
+                            <h5>{{ count($data['commits']) }}</h5>
                             <hr/>
-                            <h6>...</h6>
+                            <h6>Commits</h6>
                         </div>
                     </td>
                 </tr>
@@ -176,6 +185,21 @@
         </div>
         <br/>
         <br/>
+        <div class="content-information-main">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="center">
+                        <div class="content-information shadow-default">
+                            <h6>Git</h6>
+                            @foreach($data['commits'] as $index => $commit)
+                                <p>{{ $commit['message'] }}</p>
+                                <p class="date-commit">{{ \Carbon\Carbon::parse($commit['timestamp'])->format('d/m/Y H:i:s') }}</p>
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
         @foreach($data['posts'] as $index => $post)
             <div class="content-information-main">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">

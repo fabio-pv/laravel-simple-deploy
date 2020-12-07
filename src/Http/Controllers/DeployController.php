@@ -106,7 +106,6 @@ class DeployController
 
             $command = 'git fetch origin ' . $this->config->branch;
             exec($command, $result);
-            $this->startMessageProcess('Git', $result);
 
             $command = 'git reset --hard FETCH_HEAD';
             exec($command, $result);
@@ -211,6 +210,7 @@ class DeployController
             'pusher_name' => $pusherName,
             'time_total' => $timeTotal,
             'posts' => $this->posts,
+            'commits' => $data['commits'],
 
         ];
 
