@@ -7,6 +7,7 @@ namespace LaravelSimpleDeploy\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use LaravelSimpleDeploy\Utils\DeployUtil;
+use LaravelSimpleDeploy\Utils\ErrorUtil;
 
 class DeployController
 {
@@ -51,6 +52,7 @@ class DeployController
             );
 
         } catch (\Exception $e) {
+            ErrorUtil::make($e);
             throw $e;
         }
 
