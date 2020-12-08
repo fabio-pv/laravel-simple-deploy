@@ -33,11 +33,14 @@ class DeployController
                 throw new \Exception('Deployer not enabled');
             }
 
-            $response = $this->shouldDoDeployer();
-            if ($response === false) {
-                return response()->json(
-                    ['message' => 'Branch *** was not chosen for automatic deployment'],
-                    200
+            $result = $this->shouldDoDeployer();
+            if ($result === false) {
+
+                $branch = $this->getBranchByRequest();
+
+                return response(
+                    "Branch $branch was not chosen for automatic deployment",
+                    400
                 );
             }
 
@@ -46,8 +49,8 @@ class DeployController
             $this->customArtisanCommand();
             $this->sendMail();
 
-            return response()->json(
-                'End',
+            return response(
+                'Deploy finished',
                 200
             );
 
@@ -80,14 +83,11 @@ class DeployController
     {
         try {
 
-            $ref = \request()->all()['ref'];
-
-            if (str_contains($ref, $this->config->branch)) {
+            if ($this->getBranchByRequest() === $this->config->branch) {
                 return true;
             }
 
             return false;
-
 
         } catch (\Exception $e) {
             throw $e;
@@ -227,5 +227,10 @@ class DeployController
     {
         $now = Carbon::now();
         return $now->diffInSeconds($this->duration);
+    }
+
+    private function getBranchByRequest()
+    {
+        return str_replace('refs/heads/', '', request()->get('ref'));
     }
 }
