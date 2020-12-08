@@ -67,7 +67,7 @@
         }
 
         .content-information h6 {
-            margin: 0;
+            margin: 0 0 15px 0;
             font-size: 15px;
             color: #312727;
         }

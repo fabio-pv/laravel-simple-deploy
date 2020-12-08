@@ -167,6 +167,8 @@ class DeployController
             return;
         }
 
+        $dataView = $this->makeDataView();
+
         $transport = (new \Swift_SmtpTransport(
             $this->config->mail->mailHost,
             $this->config->mail->mailPort
@@ -176,7 +178,10 @@ class DeployController
 
         $mailer = new \Swift_Mailer($transport);
 
-        $message = (new \Swift_Message('Deploy'))
+        $message = (new \Swift_Message(
+            'Deploy: '
+            . $dataView['repository_name']
+        ))
             ->setFrom([
                 $this->config->mail->mailFrom => 'Deploy'
             ])
@@ -185,7 +190,7 @@ class DeployController
             )
             ->setBody(
                 view('laravel-simple-deploy::deploy', [
-                    'data' => $this->makeDataView()
+                    'data' => $dataView
                 ])->render(),
                 'text/html'
             );
