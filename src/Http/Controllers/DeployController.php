@@ -146,7 +146,7 @@ class DeployController
     private function customShellCommand()
     {
         foreach ($this->config->customCommandShell as $index => $command) {
-            $this->runCustomShellCommand($index, $command);;
+            $this->runCustomShellCommand($index, $command);
         }
     }
 
